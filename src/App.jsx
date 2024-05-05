@@ -1,7 +1,7 @@
 import './App.css'
 import ReactApexChart from 'react-apexcharts';
 import chartOptions from './charts/chartOptions';
-import barChartOptions from './charts/barChart';
+import {barChart} from './charts/barChart';
 import { useState, useEffect } from 'react';
 import { getMaterials } from './services/material';
 
@@ -13,15 +13,20 @@ function App() {
   const page = 1;
   const ITEMS_PER_PAGE = 10;
 
-  useEffect (() => {
-    try{
-      const response = getMaterials(page, ITEMS_PER_PAGE);
-      setMaterials(response)
-    }catch(error){
-      console.log(error);
-    }
+  const barChartOptions = barChart(materials);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getMaterials(page, ITEMS_PER_PAGE);
+        setMaterials(response.page.content);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
   }, [page, ITEMS_PER_PAGE]);
-  console.log(materials);
 
   return (
     <>
@@ -36,8 +41,8 @@ function App() {
       </div>
       <div id="bar">
         <ReactApexChart
-          options={barChartOptions}
-          series={barChartOptions.series}
+          options={barChartOptions.barChartOptions}
+          series={barChartOptions.barChartOptions.series}
           type="bar"
           height={600}
           width={800}

@@ -5,7 +5,7 @@ const materialsAPI = axios.create({ baseURL: 'http://52.206.78.25/' });
 
 // Intercepta as requisições e adiciona o token de autenticação no header
 materialsAPI.interceptors.request.use((config) => {
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiY3BmIjoiNDQ0LjQ0NC40NDQtNDQiLCJyb2xlIjoiTWFzdGVyIiwiaWF0IjoxNzE0ODM2OTgwLCJleHAiOjE3MTQ4NDA1ODB9.-LhTUtH_Bka3-e3DKiDg-hCCPArBenmFs5F-l5tr0Sk";
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiY3BmIjoiNDQ0LjQ0NC40NDQtNDQiLCJyb2xlIjoiTWFzdGVyIiwiaWF0IjoxNzE0OTMwOTQ5LCJleHAiOjE3MTQ5MzQ1NDl9.lYRE4kJ9hR6nsXofSxpSJTY6c07hR_k363PuhcGRGBM";
   config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
