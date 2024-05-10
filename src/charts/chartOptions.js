@@ -1,51 +1,100 @@
-const chartOptions = {
-  series: [{
-    name: 'Net Profit',
-    data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-  }, {
-    name: 'Revenue',
-    data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-  }, {
-    name: 'Free Cash Flow',
-    data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-  }],
-  chart: {
-    type: 'bar',
-    height: 350
-  },
-  plotOptions: {
-    bar: {
-      horizontal: false,
-      columnWidth: '55%',
-      endingShape: 'rounded'
-    },
-  },
-  dataLabels: {
-    enabled: false
-  },
-  stroke: {
-    show: true,
-    width: 2,
-    colors: ['transparent']
-  },
-  xaxis: {
-    categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-  },
-  yaxis: {
-    title: {
-      text: '$ (thousands)'
+export const chartEventOptions = (data) => {
+  console.log(data);
+
+
+
+  const materialSomaSaude = [];
+  const materialSomaViolencia = [];
+  const materialSomaCidadania = [];
+
+  // Função para calcular a soma dos materiais gastos em um evento
+  const calcularSomaMateriais = (event) => {
+    return event.spentMaterials.reduce((total, material) => total + material.quantify, 0);
+  };
+
+  // Preencher os arrays de soma do material com os valores correspondentes aos eventos
+  data.forEach(event => {
+    const somaMateriais = calcularSomaMateriais(event);
+    if (event.scope === 'Saúde e qualidade de vida') {
+      materialSomaSaude[event.id - 1] = somaMateriais;
+    } else if (event.scope === 'Enfrentamento à violência') {
+      materialSomaViolencia[event.id - 1] = somaMateriais;
+    } else if (event.scope === 'Cidadania e autonomia econômica') {
+      materialSomaCidadania[event.id - 1] = somaMateriais;
     }
-  },
-  fill: {
-    opacity: 1
-  },
-  tooltip: {
-    y: {
-      formatter: function (val) {
-        return "$ " + val + " thousands"
+  });
+
+  // Preencher os valores faltantes com zeros
+  const totalEventos = data.length;
+  for (let i = 0; i < totalEventos; i++) {
+    if (!materialSomaSaude[i]) materialSomaSaude[i] = 0;
+    if (!materialSomaViolencia[i]) materialSomaViolencia[i] = 0;
+    if (!materialSomaCidadania[i]) materialSomaCidadania[i] = 0;
+  }
+
+  console.log(materialSomaSaude);
+  console.log(materialSomaViolencia);
+  console.log(materialSomaCidadania);
+
+
+
+  const dateData = data.map(event => {
+    const startDate = new Date(event.startDate);
+    return startDate.toLocaleDateString('en-US', { timeZone: 'GMT' }) + ' GMT'; // Formatando para o formato brasileiro
+  });
+
+  console.log("dataaaa", dateData);
+
+  const chartEventsOptions = {
+    series: [{
+      name: 'Saúde e qualidade de vida',
+      data: materialSomaSaude
+    }, {
+      name: 'Enfrentamento à violência',
+      data: materialSomaViolencia
+    }, {
+      name: 'Cidadania e autonomia econômica',
+      data: materialSomaCidadania
+    }],
+    chart: {
+      type: 'bar',
+      height: 350
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '55%',
+        endingShape: 'rounded'
+      },
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ['transparent']
+    },
+    xaxis: {
+      type: 'datetime',
+      categories: dateData,
+    },
+    yaxis: {
+      title: {
+        text: 'Quantidade (Unidades)'
+      }
+    },
+    fill: {
+      opacity: 1
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return "Quantidade " + val + " (Unidades)"
+        }
       }
     }
   }
-};
 
-export default chartOptions;
+  return { chartEventsOptions }
+};

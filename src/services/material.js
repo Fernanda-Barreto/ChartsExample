@@ -1,11 +1,10 @@
 import axios from "axios";
+import { token } from "./token";
 
-// Cria uma instância do Axios com a base URL definida para 'http://localhost'
 const materialsAPI = axios.create({ baseURL: 'http://52.206.78.25/' });
 
 // Intercepta as requisições e adiciona o token de autenticação no header
 materialsAPI.interceptors.request.use((config) => {
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiY3BmIjoiNDQ0LjQ0NC40NDQtNDQiLCJyb2xlIjoiTWFzdGVyIiwiaWF0IjoxNzE0OTMwOTQ5LCJleHAiOjE3MTQ5MzQ1NDl9.lYRE4kJ9hR6nsXofSxpSJTY6c07hR_k363PuhcGRGBM";
   config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
