@@ -63,8 +63,9 @@ export const chartEventOptions = (data) => {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '55%',
-        endingShape: 'rounded'
+        columnWidth: '8',
+        endingShape: 'rounded',
+
       },
     },
     dataLabels: {
@@ -78,6 +79,9 @@ export const chartEventOptions = (data) => {
     xaxis: {
       type: 'datetime',
       categories: dateData,
+      labels: {
+        format: 'MMMM/yy',
+      }
     },
     yaxis: {
       title: {
@@ -92,7 +96,7 @@ export const chartEventOptions = (data) => {
         formatter: function (val) {
           return "Quantidade " + val + " (Unidades)"
         }
-      }
+      },
     }
   }
 
