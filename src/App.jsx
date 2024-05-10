@@ -1,7 +1,7 @@
 import './App.css'
 import ReactApexChart from 'react-apexcharts';
 import {barChart} from './charts/barChart';
-import { chartEventOptions } from './charts/chartOptions';
+import { chartEventOptions } from './charts/chartOptions' ;
 import { useState, useEffect } from 'react';
 import { getMaterials } from './services/material';
 import { getEvents } from './services/event';
@@ -50,6 +50,9 @@ function App() {
 
   return (
     <>
+      <div>
+
+      </div>
       <div id="chart">
         <ReactApexChart
           options={barChartEvent.chartEventsOptions}

@@ -1,61 +1,41 @@
 export const chartEventOptions = (data) => {
   console.log(data);
 
+  // Objeto para armazenar as somas de quantidade para cada escopo por mês
+  const sumsByMonth = {};
 
+  // Nomes dos meses em português
+  const monthNames = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+  ];
 
-  const materialSomaSaude = [];
-  const materialSomaViolencia = [];
-  const materialSomaCidadania = [];
-
-  // Função para calcular a soma dos materiais gastos em um evento
-  const calcularSomaMateriais = (event) => {
-    return event.spentMaterials.reduce((total, material) => total + material.quantify, 0);
-  };
-
-  // Preencher os arrays de soma do material com os valores correspondentes aos eventos
+  // Loop para calcular a soma das quantidades para cada escopo por mês
   data.forEach(event => {
-    const somaMateriais = calcularSomaMateriais(event);
-    if (event.scope === 'Saúde e qualidade de vida') {
-      materialSomaSaude[event.id - 1] = somaMateriais;
-    } else if (event.scope === 'Enfrentamento à violência') {
-      materialSomaViolencia[event.id - 1] = somaMateriais;
-    } else if (event.scope === 'Cidadania e autonomia econômica') {
-      materialSomaCidadania[event.id - 1] = somaMateriais;
-    }
-  });
-
-  // Preencher os valores faltantes com zeros
-  const totalEventos = data.length;
-  for (let i = 0; i < totalEventos; i++) {
-    if (!materialSomaSaude[i]) materialSomaSaude[i] = 0;
-    if (!materialSomaViolencia[i]) materialSomaViolencia[i] = 0;
-    if (!materialSomaCidadania[i]) materialSomaCidadania[i] = 0;
-  }
-
-  console.log(materialSomaSaude);
-  console.log(materialSomaViolencia);
-  console.log(materialSomaCidadania);
-
-
-
-  const dateData = data.map(event => {
     const startDate = new Date(event.startDate);
-    return startDate.toLocaleDateString('en-US', { timeZone: 'GMT' }) + ' GMT'; // Formatando para o formato brasileiro
+    const month = monthNames[startDate.getMonth()];
+    if (!sumsByMonth[month]) {
+      sumsByMonth[month] = {
+        'Saúde e qualidade de vida': 0,
+        'Enfrentamento à violência': 0,
+        'Cidadania e autonomia econômica': 0
+      };
+    }
+    sumsByMonth[month][event.scope] += event.spentMaterials.reduce((total, material) => total + material.quantify, 0);
   });
 
-  console.log("dataaaa", dateData);
+  console.log(sumsByMonth);
+
+  const scopes = Object.keys(sumsByMonth['Janeiro']); // Escopos presentes nos dados
+
+  const seriesData = scopes.map(scope => ({
+    name: scope,
+    data: Object.values(sumsByMonth).map(monthData => monthData[scope])
+  }));
+  
 
   const chartEventsOptions = {
-    series: [{
-      name: 'Saúde e qualidade de vida',
-      data: materialSomaSaude
-    }, {
-      name: 'Enfrentamento à violência',
-      data: materialSomaViolencia
-    }, {
-      name: 'Cidadania e autonomia econômica',
-      data: materialSomaCidadania
-    }],
+    series: seriesData,
     chart: {
       type: 'bar',
       height: 350
@@ -63,9 +43,8 @@ export const chartEventOptions = (data) => {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '8',
-        endingShape: 'rounded',
-
+        columnWidth: '50%',
+        endingShape: 'rounded'
       },
     },
     dataLabels: {
@@ -77,10 +56,11 @@ export const chartEventOptions = (data) => {
       colors: ['transparent']
     },
     xaxis: {
-      type: 'datetime',
-      categories: dateData,
+      categories: Object.keys(sumsByMonth), // Meses no eixo x
       labels: {
-        format: 'MMMM/yy',
+        formatter: function (value) {
+          return value;
+        }
       }
     },
     yaxis: {
@@ -98,7 +78,7 @@ export const chartEventOptions = (data) => {
         }
       },
     }
-  }
+  };
 
-  return { chartEventsOptions }
+  return { chartEventsOptions };
 };
