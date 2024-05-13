@@ -62,11 +62,11 @@ export const fakeData = [
     id: 4,
     name: "Evento 4",
     kind: "Ação",
-    endDate: "2023-04-20T13:00:00.000Z",
+    endDate: "2025-04-20T13:00:00.000Z",
     initiativeKind: "Evento 4",
     participantsNumber: 25,
     scope: "Enfrentamento à violência",
-    startDate: "2023-04-20T12:00:00.000Z",
+    startDate: "2025-04-20T12:00:00.000Z",
     userId: 4,
     spentMaterials: [
       {
@@ -327,11 +327,11 @@ export const fakeData = [
     id: 17,
     name: "Evento 17",
     kind: "Ação",
-    endDate: "2024-05-25T13:00:00.000Z",
+    endDate: "2025-05-25T13:00:00.000Z",
     initiativeKind: "Evento 17",
     participantsNumber: 90,
     scope: "Cidadania e autonomia econômica",
-    startDate: "2024-05-25T12:00:00.000Z",
+    startDate: "2025-05-25T12:00:00.000Z",
     userId: 17,
     spentMaterials: [
       {
@@ -579,11 +579,11 @@ export const fakeData = [
     id: 29,
     name: "Evento 29",
     kind: "Ação",
-    endDate: "2024-01-23T13:00:00.000Z",
+    endDate: "2025-01-23T13:00:00.000Z",
     initiativeKind: "Evento 29",
     participantsNumber: 100,
     scope: "Saúde e qualidade de vida",
-    startDate: "2024-01-23T12:00:00.000Z",
+    startDate: "2025-01-23T12:00:00.000Z",
     userId: 29,
     spentMaterials: [
       {
@@ -600,11 +600,11 @@ export const fakeData = [
     id: 30,
     name: "Evento 30",
     kind: "Ação",
-    endDate: "2024-01-26T13:00:00.000Z",
+    endDate: "2025-01-26T13:00:00.000Z",
     initiativeKind: "Evento 30",
     participantsNumber: 90,
     scope: "Cidadania e autonomia econômica",
-    startDate: "2024-01-26T12:00:00.000Z",
+    startDate: "2025-01-26T12:00:00.000Z",
     userId: 30,
     spentMaterials: [
       {

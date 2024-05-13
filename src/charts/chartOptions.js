@@ -1,4 +1,4 @@
-export const chartEventOptions = (data) => {
+export const chartEventOptions = (data, year) => {
   console.log(data);
 
   // Objeto para armazenar as somas de quantidade para cada escopo por mês
@@ -10,8 +10,14 @@ export const chartEventOptions = (data) => {
     "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
   ];
 
+  // Filtra os eventos com base no ano selecionado
+  const filteredData = data.filter(event => {
+    const startDate = new Date(event.startDate);
+    return startDate.getFullYear() === year;
+  });
+
   // Loop para calcular a soma das quantidades para cada escopo por mês
-  data.forEach(event => {
+  filteredData.forEach(event => {
     const startDate = new Date(event.startDate);
     const month = monthNames[startDate.getMonth()];
     if (!sumsByMonth[month]) {
