@@ -46,6 +46,38 @@ async function getMaterials(number, size) {
     }
   }
 }
+
+/**
+ * Obtém a dados de gráficos.
+ * @returns {Promise<Array>} Uma promessa que é resolvida com a lista de material.
+ */
+async function getDataGraphs() {
+  try {
+    const response = await materialsAPI.get("/graphics");
+
+    console.log(response.data);
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      console.error("Erro ao obter os dados:", response.statusText);
+      throw new Error("Erro ao obter os dados");
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      throw{
+        error: {
+          success: false,
+          message: "Token de autenticação inválido ou não enviado.",
+        },
+      };
+    } else if (error.response && error.response.status === 403) {
+      throw { error: { success: false, message: "Usuário sem acesso!" } };
+    } else {
+      throw { error: { success: false, message: "Erro no servidor." } };
+    }
+  }
+}
 export {
   getMaterials,
+  getDataGraphs
 };

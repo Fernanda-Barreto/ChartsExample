@@ -4,10 +4,12 @@ import { barChart } from './charts/barChart';
 import { chartEventOptions } from './charts/chartOptions';
 import { useState, useEffect } from 'react';
 import { getMaterials } from './services/material';
+import { getDataGraphs } from './services/material';
 import { getEvents } from './services/event';
 import { fakeData } from './charts/data/fakedata';
 
 function App() {
+  const [dataGraphs, setDataGraphs] = useState([]);
   const [materials, setMaterials] = useState([]);
   const [eventData, setEventData] = useState(null);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -19,6 +21,7 @@ function App() {
   const barChartOptions = barChart(materials);
   const barChartEvent = chartEventOptions(fakeData, selectedYear);
 
+  // Get de Materiais
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,6 +35,8 @@ function App() {
     fetchData();
   }, [page, ITEMS_PER_PAGE]);
 
+
+  // Get de Eventos
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -52,6 +57,22 @@ function App() {
 
     fetchEvents();
   }, []);
+
+  // Get de Eventos
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const dataGraphs = await getDataGraphs();
+        setDataGraphs(dataGraphs.page.content);
+      } catch (error) {
+        console.error("Erro ao obter os eventos:", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  console.log("Os dados dos gráficos estão disponíveis aqui: ", dataGraphs);
 
   const handleYearChange = (event) => {
     setSelectedYear(parseInt(event.target.value));
